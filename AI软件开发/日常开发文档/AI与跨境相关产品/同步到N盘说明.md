@@ -1,52 +1,46 @@
-# 同步到本地 N 盘说明
+# 为什么 N 盘是空的？
 
-云端仓库路径：
+本次开发在 **Cursor 云端 Linux 环境** 完成，**无法直接写入你电脑上的 `N:\` 盘**。  
+文档已写在 GitHub 仓库分支 `cursor/ai-crossborder-product-docs-2c9c` 中，需要你本机拉取/解压一次。
 
-```text
-AI软件开发/日常开发文档/AI与跨境相关产品/
-```
+# 最快方式：解压 ZIP 到 N 盘（推荐）
 
-对应本地目标路径：
-
-```text
-N:\AI软件开发\日常开发文档\AI与跨境相关产品\
-```
-
-## Windows 同步方式（任选其一）
-
-### 方式 A：直接复制
-
-1. 从 GitHub 拉取或下载本仓库  
-2. 将文件夹 `AI软件开发\日常开发文档\AI与跨境相关产品` 整体复制到 `N:\AI软件开发\日常开发文档\`  
-3. 覆盖前建议先备份 N 盘旧版
-
-### 方式 B：PowerShell 镜像同步
-
-在仓库根目录执行（请按实际仓库路径修改 `$src`）：
+1. 下载产物：`AI与跨境相关产品.zip`（Cloud Agent Artifacts / 对话附件）
+2. 在本机 PowerShell 执行：
 
 ```powershell
-$src = "D:\your-repo\AI软件开发\日常开发文档\AI与跨境相关产品"
-$dst = "N:\AI软件开发\日常开发文档\AI与跨境相关产品"
-New-Item -ItemType Directory -Force -Path $dst | Out-Null
-robocopy $src $dst /MIR /R:2 /W:2
+New-Item -ItemType Directory -Force -Path "N:\AI软件开发\日常开发文档" | Out-Null
+Expand-Archive -Path "$env:USERPROFILE\Downloads\AI与跨境相关产品.zip" -DestinationPath "N:\AI软件开发\日常开发文档" -Force
+explorer "N:\AI软件开发\日常开发文档\AI与跨境相关产品"
 ```
 
-> `/MIR` 会让目标与源完全一致（含删除）。首次建议先去掉 `/MIR`，改用 `/E` 只做增量复制。
+若 zip 不在 Downloads，把路径改成你实际下载位置。
 
-### 方式 C：Git 直接放到 N 盘
+解压后应看到 `01`～`10` 共 10 个文件夹，以及 `README.md`、`00-总览与实施路线图.md`。
+
+# 方式二：从 GitHub 拉取后一键同步
 
 ```powershell
-cd N:\AI软件开发\日常开发文档
-git clone <你的仓库地址> temp-clone
-# 将 temp-clone\AI软件开发\日常开发文档\AI与跨境相关产品 挪到当前目录
+cd $env:TEMP
+git clone -b cursor/ai-crossborder-product-docs-2c9c https://github.com/gulingle/GULINGLE.git GULINGLE-docs
+cd .\GULINGLE-docs\AI软件开发\日常开发文档\AI与跨境相关产品
+Set-ExecutionPolicy -Scope Process Bypass
+.\一键同步到N盘.ps1
 ```
 
-## 目录完整性自检
+# 方式三：手动复制
 
-同步后应看到：
+把仓库里的文件夹：
 
-- `README.md`、`00-总览与实施路线图.md`、`同步到N盘说明.md`
-- `01`～`10` 共 10 个项目文件夹
-- 每个项目内 5 个文件：`README.md`、`01`～`04` 文档
+`...\AI软件开发\日常开发文档\AI与跨境相关产品\`
 
-共约 **52** 个 Markdown 文件。
+整目录复制到：
+
+`N:\AI软件开发\日常开发文档\AI与跨境相关产品\`
+
+# 自检
+
+```powershell
+(Get-ChildItem "N:\AI软件开发\日常开发文档\AI与跨境相关产品" -Recurse -File).Count
+# 预期约 50+ 个文件
+```
