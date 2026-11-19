@@ -51,7 +51,7 @@
 ### 🧩 System Architecture & Knowledge Graph · 系统架构蓝图
 
 <div align="center">
-  <img src="./assets/architecture.gif" alt="GULINGLE System Architecture" width="100%" />
+  <img src="./assets/architecture.png" alt="GULINGLE System Architecture" width="100%" />
 </div>
 
 ---
